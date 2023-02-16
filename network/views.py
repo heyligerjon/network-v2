@@ -7,9 +7,9 @@ from django.urls import reverse
 from .models import User
 
 
-def index(request):
-    return render(request, "network/index.html")
-
+def home(request):
+    # Retrieve all statuses from user's friends and display
+    return render(request, "network/home.html")
 
 def login_view(request):
     if request.method == "POST":
@@ -30,11 +30,9 @@ def login_view(request):
     else:
         return render(request, "network/login.html")
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-
 
 def register(request):
     if request.method == "POST":
@@ -61,3 +59,30 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def status_view(request, statusId):
+    #Retrieve status from id, retrieve comments from statusId and display all
+    return render(request, "network/status.html")
+
+def status_new(request):
+    # Display form to add new status
+    return render(request, "network/status.html")
+
+def status_edit(request, statusId):
+    # Retrieve status if statusId, blank new form if null
+    # Display prefilled form for update
+    return render(request, "network/status.html")
+
+def profile_view(request, username):
+    # Retrieve all profile details
+    # Retrieve status history
+    return render(request, "network/profile.html")
+
+def profile_edit(request, username):
+    # Retrieve all profile details
+    # Display prefilled form for changes
+    return render(request, "network/profile.html")
+
+def friends_list(request, username):
+    # Retrieve all friends by username
+    return render(request, "network/friends.html")
