@@ -2,11 +2,10 @@
 *.log
 *.pot
 *.pyc
-__pycache__
+*/__pycache__
 db.sqlite3
 mediagit
 /network/migrations
-*/__pycache__
 
 # File-based project format
 *.iws
