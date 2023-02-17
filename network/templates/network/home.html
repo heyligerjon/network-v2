@@ -1,5 +1,18 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
-    TODO
+    <div class="home-view">
+        <h3>Home</h3>
+        <form id="new-status-form">
+            <div class="form-group">
+                <textarea id="status-body" class="form-control"></textarea>
+                <button type="submit" id="submit" class="btn btn-primary">Post</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/home.js' %}"></script>
 {% endblock %}

@@ -1,15 +1,20 @@
+import json
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import User
-
+from .models import User, Status, Comment, Reaction
 
 def home(request):
-    # Retrieve all statuses from user's friends and display
-    return render(request, "network/home.html")
+    if request.user.is_authenticated:
+        # Retrieve all statuses from user's friends and display
+        return render(request, "network/home.html")
+    else:
+        return HttpResponseRedirect(reverse("login"))
 
 def login_view(request):
     if request.method == "POST":
@@ -64,14 +69,30 @@ def status_view(request, statusId):
     #Retrieve status from id, retrieve comments from statusId and display all
     return render(request, "network/status.html")
 
+@csrf_exempt
+@login_required
 def status_new(request):
+    # New status must be created via POST
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required"}, status=400)
+    
+    data = json.loads(request.body)
+
+    postedBy = request.user
+    content = data.get("body", "")
+
+    status = Status(
+        user=postedBy,
+        body=content
+    )
+    status.save();
     # Display form to add new status
-    return render(request, "network/status.html")
+    return JsonResponse({"message": "Status updated successfully."}, status=201)
 
 def status_edit(request, statusId):
     # Retrieve status if statusId, blank new form if null
     # Display prefilled form for update
-    return render(request, "network/status.html")
+    return JsonResponse({"message": "Status updated successfully."}, status=201)
 
 def profile_view(request, username):
     # Retrieve all profile details
@@ -86,3 +107,6 @@ def profile_edit(request, username):
 def friends_list(request, username):
     # Retrieve all friends by username
     return render(request, "network/friends.html")
+
+def comment(request):
+    pass
