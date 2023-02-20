@@ -9,10 +9,47 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Status, Comment, Reaction
 
+def index(request):
+
+    # Authenticated users view their inbox
+    if request.user.is_authenticated:
+        return render(request, "network/home.html")
+
+    # Everyone else is prompted to sign in
+    else:
+        return HttpResponseRedirect(reverse("login"))
+
+def get_friends(request):
+    friends = [request.user]
+
+    try:
+        friendsObj = request.user.friends.all()
+    except:
+        friendsObj = None
+    
+    for friend in friendsObj:
+        if friend not in friends:
+            friends.append(friend)
+
+    return friends
+
 def home(request):
     if request.user.is_authenticated:
-        # Retrieve all statuses from user's friends and display
-        return render(request, "network/home.html")
+
+        # Retrieve the user's friends to determine statuses to show
+        friends = get_friends(request)
+
+        try:
+            statuses = Status.objects.filter(user__in=friends)
+        except:
+            statuses = None
+
+        statuses.order_by("-timestamp").all()
+        if statuses:    
+            return JsonResponse(
+                [status.serialize() for status in statuses], 
+                safe=False
+            )
     else:
         return HttpResponseRedirect(reverse("login"))
 
@@ -85,7 +122,7 @@ def status_new(request):
         user=postedBy,
         body=content
     )
-    status.save();
+    status.save()
     # Display form to add new status
     return JsonResponse({"message": "Status updated successfully."}, status=201)
 

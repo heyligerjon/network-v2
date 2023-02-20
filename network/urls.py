@@ -4,12 +4,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    path("", views.index, name="index"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
 
     # API Routes
+    path("home", views.home, name="home"),
     path("status/new", views.status_new, name="status_new"),
     path("status/<int:statusId>", views.status_view, name="status_view"),
     path("status/<int:statusId>/edit", views.status_edit, name="status_edit"),

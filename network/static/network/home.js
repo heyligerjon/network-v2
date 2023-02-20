@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#new-status-form').addEventListener('submit', add_status);
 
     // By default, load the inbox
-    load_statuses;
+    load_statuses();
 });
 
 function add_status(e) {
@@ -32,4 +32,20 @@ function add_status(e) {
 
 function load_statuses() {
 
+    fetch('/home')
+    .then(response => response.json())
+    .then(statuses => {
+        statuses.forEach(element => {
+            const statusDiv = document.createElement('div');
+            statusDiv.id = 'status-' + element.id;
+            statusDiv.className = 'list-group-item';
+            statusDiv.innerHTML = `
+                <span>${element.username}</span>
+                <span>${element.body}</span>
+                <span>${element.timestamp}</span>
+            `
+            container = document.querySelector('#status-view');
+            container.insertBefore(statusDiv, container.firstChild);
+        })
+    })
 }
