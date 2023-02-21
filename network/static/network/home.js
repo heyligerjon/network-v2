@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Use buttons to toggle between views
     document.querySelector('#new-status-form').addEventListener('submit', add_status);
 
-    // By default, load the inbox
+    // By default, load the statuses
     load_statuses();
 });
 
@@ -44,6 +44,7 @@ function load_statuses() {
                 <span>${element.body}</span>
                 <span>${element.timestamp}</span>
             `
+            statusDiv.addEventListener('click', () => load_status(element.id))
             container = document.querySelector('#status-view');
             container.insertBefore(statusDiv, container.firstChild);
         })
