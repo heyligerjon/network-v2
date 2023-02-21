@@ -4,6 +4,21 @@ from emoji import get_emoji_unicode_dict
 
 class User(AbstractUser):
     friends = models.ManyToManyField("self")
+    profilePicture = models.ImageField(upload_to=None, blank=True)
+
+    def __str__(self):
+        return f"@{self.username}"
+
+    def serialize(self):
+        friends_list = list(self.friends.all().values_list())
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "friends": friends_list
+        }
 
 class Status(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="statuses")
@@ -11,7 +26,7 @@ class Status(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"${self.postedBy}'s Status: {self.body}"
+        return f"{self.user}'s Status: {self.body}"
 
     def serialize(self):
         return {

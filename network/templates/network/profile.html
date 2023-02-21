@@ -3,7 +3,27 @@
 
 {% block body %}
     <div id="profile-view">
-
+        <div id="sidebar">
+            <div id="friends-view">
+                Friends {{ friends }}
+            </div>
+        </div>
+        <h2>{{ user.username }}</h2>
+        <div id="profile-pic"  class="profile-elm"></div>
+        <div>
+            <h5>{{ user.first_name|add:" "|add:user.last_name }}</h5>
+        </div>
+        <div id="status-view">
+            <div class="list-group">
+            {% for status in statuses %}
+                <a href="#" id="status-{{ status.id }}" class="list-group-item list-group-item-action">
+                    <span>{{ status.user }}</span>
+                    <span>{{ status.body }}</span>
+                    <span>{{ status.timestamp }}</span>
+                </a>
+            {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
 

@@ -1,4 +1,5 @@
 import json
+from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -33,18 +34,23 @@ def get_friends(request):
 
     return friends
 
+def get_statuses(user_list):
+
+    try:
+        statuses = Status.objects.filter(user__in=user_list)
+        statuses.order_by("-timestamp").all()
+    except:
+        statuses = None
+
+    return statuses
+
 def home(request):
     if request.user.is_authenticated:
 
         # Retrieve the user's friends to determine statuses to show
         friends = get_friends(request)
+        statuses = get_statuses(friends)
 
-        try:
-            statuses = Status.objects.filter(user__in=friends)
-        except:
-            statuses = None
-
-        statuses.order_by("-timestamp").all()
         if statuses:    
             return JsonResponse(
                 [status.serialize() for status in statuses], 
@@ -132,9 +138,16 @@ def status_edit(request, statusId):
     return JsonResponse({"message": "Status updated successfully."}, status=201)
 
 def profile_view(request, username):
-    # Retrieve all profile details
-    # Retrieve status history
-    return render(request, "network/profile.html")
+    # Retrieve user details, friends, and status history to display on profile
+    user = User.objects.get(username=username)
+    statuses = get_statuses(User.objects.filter(username=username))
+    numFriends = user.friends.all().count()
+
+    return render(request, "network/profile.html",{
+        "user": user,
+        "statuses": statuses,
+        "friends": numFriends
+    })
 
 def profile_edit(request, username):
     # Retrieve all profile details
