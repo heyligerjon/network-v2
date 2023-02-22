@@ -36,16 +36,17 @@ function load_statuses() {
     .then(response => response.json())
     .then(statuses => {
         statuses.forEach(element => {
-            const statusDiv = document.createElement('div');
+            const statusDiv = document.createElement('a');
             statusDiv.id = 'status-' + element.id;
-            statusDiv.className = 'list-group-item';
+            statusDiv.href = `status/${element.id}`
+            statusDiv.className = 'list-group-item list-group-item-action';
             statusDiv.innerHTML = `
                 <span>${element.username}</span>
                 <span>${element.body}</span>
                 <span>${element.timestamp}</span>
             `
             statusDiv.addEventListener('click', () => load_status(element.id))
-            container = document.querySelector('#status-view');
+            container = document.querySelector('.list-group');
             container.insertBefore(statusDiv, container.firstChild);
         })
     })
