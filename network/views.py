@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 
 from .models import User, Status, Comment, Reaction
 
@@ -151,12 +152,23 @@ def profile_view(request, username):
 
 def profile_edit(request, username):
     # Retrieve all profile details
+
+
     # Display prefilled form for changes
     return render(request, "network/profile.html")
 
 def friends_list(request, username):
+
     # Retrieve all friends by username
-    return render(request, "network/friends.html")
+    user = User.objects.get(username=username)
+    friends = user.friends.all()
+
+    # Retrieve most recent status from friend to display
+
+    context = {
+        "data": serializers.serialize('json', friends, fields=('id', 'username', 'first_name', 'last_name'))
+    }
+    return JsonResponse(context)
 
 def comment(request):
     pass

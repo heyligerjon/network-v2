@@ -4,11 +4,11 @@
 {% block body %}
     <div id="profile-view">
         <div id="sidebar">
-            <div id="friends-view">
+            <div id="friends-count" style="display: none;">
                 Friends {{ friends }}
             </div>
         </div>
-        <h2>{{ user.username }}</h2>
+        <h2 id="user-hdr">{{ user.username }}</h2>
         <div id="profile-pic"  class="profile-elm"></div>
         <div>
             <h5>{{ user.first_name|add:" "|add:user.last_name }}</h5>
@@ -16,7 +16,7 @@
         <div id="status-view">
             <div class="list-group">
             {% for status in statuses %}
-                <a href="#" id="status-{{ status.id }}" class="list-group-item list-group-item-action">
+                <a href="{% url 'status_view' status.id %}" id="status-{{ status.id }}" class="list-group-item list-group-item-action">
                     <span>{{ status.user }}</span>
                     <span>{{ status.body }}</span>
                     <span>{{ status.timestamp }}</span>
@@ -24,6 +24,10 @@
             {% endfor %}
             </div>
         </div>
+    </div>
+    <div id="friends-view">
+        <div id="user-username">{{ user.username }}</div>
+        <div id="friend-list-group" class="list-group"></div>
     </div>
 {% endblock %}
 
