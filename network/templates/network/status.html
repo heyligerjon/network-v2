@@ -6,6 +6,7 @@
         <div id="status-card" class="card" style="width: 50%;">
             <div class="card=body">
                 <span hidden id="status-id">{{ status.id }}</span>
+                <span hidden id="status-user">{{ status.user.username }}</span>
                 <h5 class="card-title">{{ status.user }}</h5>  
                 <p class="card-text">{{ status.body }}</p>
             </div>
@@ -19,12 +20,12 @@
             </div>
             <div id="comment-box" class="card-body">
                 <form id="comment-form">
-                    <textarea></textarea>
+                    <textarea id="comment-body"></textarea>
                     <button type="submit" id="comment-send" class="btn btn-secondary">Send</button>
                 </form>
             </div>
             <div id="comment-list" class="list-group">
-                
+
             </div>
         </div>
     </div>

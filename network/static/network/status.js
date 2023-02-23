@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#status-edit').addEventListener('click', () => 
         edit_status(statusId));
     
-    document.querySelector('#comment-form').addEventListener('submit', () => 
-        reply(statusId));
+    document.querySelector('#comment-form').addEventListener('submit', () => {
+        reply(statusId);
+    });
     // Hide the comment box initially
     document.querySelector('#comment-box').style.display= 'none'
 });
@@ -23,12 +24,14 @@ function open_reply(statusId) {
 }
 
 function reply(statusId) {
-    statusId.preventDefault();
+    event.preventDefault()
     // Parse document and form for parameters and POST
+    username = document.querySelector('#status-user').innerHTML
+    body = document.querySelector('#comment-body').value
+
     fetch(`${statusId}/comment`, {
         method: 'POST',
         body: JSON.stringify({
-            statusId: statusId,
             username: username,
             body: body,
         })
@@ -40,11 +43,11 @@ function reply(statusId) {
             return false;
         }
         console.log(result);
-        //document.querySelector('#comment-box').style.display= 'none'
+        document.querySelector('#comment-box').style.display = 'none'
         // add comment to list group
-        load_status(statusId);
+        //load_status(statusId);
     })
-    document.querySelector('#comment-box').style.display= 'none'
+    return false;
 }
 
 function react(statusId) {

@@ -177,5 +177,35 @@ def friends_list(request, username):
     }
     return JsonResponse(context)
 
-def comment(request):
-    pass
+@csrf_exempt
+@login_required
+def comment(request, statusId):
+    
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required"}, status=400)
+    data = json.loads(request.body)
+
+    # Convert username to user object
+    username = data.get("username", "")
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return JsonResponse({
+            "error": f"User '{username}' does not exist."
+        })
+    
+    # Get necessary data and create comment object
+    body = data.get("body", "")
+    try:
+        status = Status.objects.get(id=statusId)
+    except Status.DoesNotExist:
+        return JsonResponse({
+            "error": f"Status id:{statusId} does not exist for '{username}'"
+        })
+    comment = Comment(
+        user=user,
+        commentPost=status,
+        body=body
+    )
+    comment.save()
+    return JsonResponse({"message": "Comment added successfully"})
