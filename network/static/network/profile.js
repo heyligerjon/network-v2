@@ -53,3 +53,7 @@ function load_friends(username) {
 
     })
 }
+
+function edit_profile(username) {
+    
+}

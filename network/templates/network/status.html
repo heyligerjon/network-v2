@@ -2,5 +2,34 @@
 {% load static %}
 
 {% block body %}
-    TODO
+    <div id="status-view">
+        <div id="status-card" class="card" style="width: 50%;">
+            <div class="card=body">
+                <span hidden id="status-id">{{ status.id }}</span>
+                <h5 class="card-title">{{ status.user }}</h5>  
+                <p class="card-text">{{ status.body }}</p>
+            </div>
+            <hr>
+            <div id="status-options" class="card-body">
+                <button type="button" id="status-reply" class="btn btn-primary">Reply</button>
+                <button type="button" id="status-like" class="btn btn-primary">Like</button>
+                {% if status.user == user %}
+                    <button type="button" id="status-edit" class="btn btn-primary">Edit</button>
+                {% endif %}
+            </div>
+            <div id="comment-box" class="card-body">
+                <form id="comment-form">
+                    <textarea></textarea>
+                    <button type="submit" id="comment-send" class="btn btn-secondary">Send</button>
+                </form>
+            </div>
+            <div id="comment-list" class="list-group">
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/status.js' %}"></script>
 {% endblock %}

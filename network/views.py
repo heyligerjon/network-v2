@@ -111,7 +111,14 @@ def register(request):
 
 def status_view(request, statusId):
     #Retrieve status from id, retrieve comments from statusId and display all
-    return render(request, "network/status.html")
+    status = Status.objects.get(id=statusId)
+    comments = Comment.objects.filter(commentPost=status)
+    reactions = Reaction.objects.filter(reactPost=status)
+    
+    return render(request, "network/status.html", {
+        "status": status,
+        "comments": comments
+    })
 
 @csrf_exempt
 @login_required
