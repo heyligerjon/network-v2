@@ -50,7 +50,10 @@ def home(request):
 
         # Retrieve the user's friends to determine statuses to show
         friends = get_friends(request)
-        statuses = get_statuses(friends)
+
+        # TODO
+        # For now, get all statuses. When friend functionality is added, constrain
+        statuses = get_statuses(User.objects.all())
 
         if statuses:    
             return JsonResponse(
@@ -109,14 +112,14 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+@csrf_exempt
 def status_view(request, statusId):
+
     #Retrieve status from id, retrieve comments from statusId and display all
-    status = Status.objects.get(id=statusId)
+    status = Status.objects.get(id=statusId, user=request.user)
     comments = Comment.objects.filter(commentPost=status)
     reactions = Reaction.objects.filter(reactPost=status)
     
-    # test = comments[1]
-
     return render(request, "network/status.html", {
         "status": status,
         "comments": comments
@@ -142,10 +145,24 @@ def status_new(request):
     # Display form to add new status
     return JsonResponse({"message": "Status updated successfully."}, status=201)
 
+@login_required
 def status_edit(request, statusId):
     # Retrieve status if statusId, blank new form if null
-    # Display prefilled form for update
-    return JsonResponse({"message": "Status updated successfully."}, status=201)
+    try:
+        status = Status.objects.get(id=statusId, user=request.user)
+    except Status.DoesNotExist:
+        error = '404 Error: Status not found'
+
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required"}, status=404)
+
+    data = json.loads(request.body)
+
+    if data.get("body", "") is not None:
+        status.body = data["body"]
+    status.save()
+
+    return JsonResponse({"message": "Status updated successfully."}, status=200)
 
 def profile_view(request, username):
     # Retrieve user details, friends, and status history to display on profile

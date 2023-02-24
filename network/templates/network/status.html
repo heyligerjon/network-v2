@@ -8,7 +8,12 @@
                 <span hidden id="status-id">{{ status.id }}</span>
                 <span hidden id="status-user">{{ status.user.username }}</span>
                 <h4 class="card-title">{{ status.user }}</h5>  
-                <p class="card-text">{{ status.body }}</p>
+                <p id="status-body" class="card-text">{{ status.body }}</p>
+                <form id="status-form">
+                    {% csrf_token %}
+                    <input id="status-editor">
+                    <button type="submit">Send</button>
+                </form>
             </div>
             <hr>
             <div id="status-options" class="card-body">
