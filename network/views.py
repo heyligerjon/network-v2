@@ -1,4 +1,5 @@
 import json
+import emoji
 from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -118,11 +119,15 @@ def status_view(request, statusId):
     #Retrieve status from id, retrieve comments from statusId and display all
     status = Status.objects.get(id=statusId, user=request.user)
     comments = Comment.objects.filter(commentPost=status)
-    reactions = Reaction.objects.filter(reactPost=status)
+    numReactions = Reaction.objects.filter(reactPost=status).count()
     
+    # Eventually will want to expand reactions object for full emoji support and 
+    # filter for more data
+
     return render(request, "network/status.html", {
         "status": status,
-        "comments": comments
+        "comments": comments,
+        "reactions": numReactions
     })
 
 @csrf_exempt
@@ -231,3 +236,25 @@ def comment(request, statusId):
         "message": "Comment added successfully",
         "commentId": comment.id
         })
+
+def react(request, statusId):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required"}, status=400)
+    
+    post = Status.objects.get(id=statusId)
+
+    reaction = Reaction(
+        user=request.user,
+        reactPost=post,
+        reaction=emoji.emojize(':thumbsup:')
+    )
+    reaction.save()
+
+    # In future will filter by react type and display counts for each
+    numReacts = Reaction.objects.filter(reactPost=post).count()
+
+    return JsonResponse({
+        "message": "Liked",
+        "reactId": reaction.id,
+        "reactions": numReacts
+    }, status=200)

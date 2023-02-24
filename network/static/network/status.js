@@ -96,4 +96,18 @@ function edit_status(statusId) {
 
 function react(statusId) {
 
+    csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    fetch(`${statusId}/react`, {
+        method: 'POST',
+        headers: {"X-CSRFToken": csrftoken},
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.error) {
+            console.log('Error:', result.error);
+            return false;
+        }
+        console.log(result.message);
+        document.querySelector('#status-reacts').innerHTML = result.reactions;
+    })
 }

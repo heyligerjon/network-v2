@@ -19,6 +19,7 @@
             <div id="status-options" class="card-body">
                 <button type="button" id="status-reply" class="btn btn-primary">Reply</button>
                 <button type="button" id="status-like" class="btn btn-primary">Like</button>
+                <span id="status-reacts">{{ reactions }}</span>
                 {% if status.user == user %}
                     <button type="button" id="status-edit" class="btn btn-primary">Edit</button>
                 {% endif %}
