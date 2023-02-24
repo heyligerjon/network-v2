@@ -18,13 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function open_reply(statusId) {
-    
+
+    // Clear out text field
+    document.querySelector('#comment-body').value = ''
+
     // Display the comment box and add a click handler to send button
     document.querySelector('#comment-box').style.display= 'block'
 }
 
 function reply(statusId) {
-    event.preventDefault()
+
     // Parse document and form for parameters and POST
     username = document.querySelector('#status-user').innerHTML
     body = document.querySelector('#comment-body').value
@@ -43,20 +46,30 @@ function reply(statusId) {
             return false;
         }
         console.log(result);
-        document.querySelector('#comment-box').style.display = 'none'
-        // add comment to list group
-        //load_status(statusId);
+        //load_status(statusId)
     })
-    return false;
+    window.location.reload()
 }
 
 function react(statusId) {
 
 }
 
-function load_status(statusId) {
+// function load_status(statusId) {
 
-}
+//     fetch(`${statusId}`)
+//         // add comment to list group and hide editor
+//         const commentDiv = document.createElement('div');
+//         commentDiv.id = `comment-${statusId}-${result.commentId}`;
+//         commentDiv.className = 'list-group-item list-group-item-action';
+//         commentDiv.innerHTML = `
+//             <h6 class="card-title">${username}</h6>
+//             <p class="card-text">${body}</span>
+//         `;
+//         container = document.querySelector('#comment-list');
+//         container.append(commentDiv);
+//         document.querySelector('#comment-box').style.display = 'none';
+// }
 
 function edit_status(statusId) {
 

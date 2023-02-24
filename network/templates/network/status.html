@@ -7,7 +7,7 @@
             <div class="card=body">
                 <span hidden id="status-id">{{ status.id }}</span>
                 <span hidden id="status-user">{{ status.user.username }}</span>
-                <h5 class="card-title">{{ status.user }}</h5>  
+                <h4 class="card-title">{{ status.user }}</h5>  
                 <p class="card-text">{{ status.body }}</p>
             </div>
             <hr>
@@ -25,7 +25,12 @@
                 </form>
             </div>
             <div id="comment-list" class="list-group">
-
+                <h5>Comments</h5>
+            {% for comment in comments %}
+                <hr>
+                <h6 class="card-title">{{ comment.user.username }}</h6>
+                <p class="card-text">${{ comment.body }}</span>
+            {% endfor %}
             </div>
         </div>
     </div>

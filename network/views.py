@@ -115,6 +115,8 @@ def status_view(request, statusId):
     comments = Comment.objects.filter(commentPost=status)
     reactions = Reaction.objects.filter(reactPost=status)
     
+    # test = comments[1]
+
     return render(request, "network/status.html", {
         "status": status,
         "comments": comments
@@ -208,4 +210,7 @@ def comment(request, statusId):
         body=body
     )
     comment.save()
-    return JsonResponse({"message": "Comment added successfully"})
+    return JsonResponse({
+        "message": "Comment added successfully",
+        "commentId": comment.id
+        })
