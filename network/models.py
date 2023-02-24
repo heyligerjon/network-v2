@@ -4,7 +4,7 @@ from emoji import get_emoji_unicode_dict
 
 class User(AbstractUser):
     friends = models.ManyToManyField("self")
-    profilePicture = models.ImageField(upload_to=None, blank=True)
+    profilePicture = models.ImageField(default='static/img/default.jpg',upload_to=None, blank=True)
 
     def __str__(self):
         return f"@{self.username}"
@@ -43,7 +43,7 @@ class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"${self.commentBy}: {self.body}"
+        return f"{self.user}: {self.body}"
         
     def serialize(self):
         return {
