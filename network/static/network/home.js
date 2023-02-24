@@ -31,6 +31,7 @@ function add_status(e) {
 }
 
 function load_statuses() {
+    document.querySelector('#status-body').value = ''
 
     fetch('/home')
     .then(response => response.json())
