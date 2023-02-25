@@ -3,8 +3,8 @@ from django.db import models
 from emoji import get_emoji_unicode_dict
 
 class User(AbstractUser):
-    friends = models.ManyToManyField("self")
-    profilePicture = models.ImageField(default='static/img/default.jpg',upload_to=None, blank=True)
+    friends = models.ManyToManyField("self", blank=True)
+    profilePicture = models.ImageField(default='static/img/default.jpg', upload_to=None, blank=True)
 
     def __str__(self):
         return f"@{self.username}"

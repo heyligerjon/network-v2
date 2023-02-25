@@ -182,11 +182,27 @@ def profile_view(request, username):
     })
 
 def profile_edit(request, username):
-    # Retrieve all profile details
 
+    # Validate request and retrieve data
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required"}, status=400)
+    
+    data = json.loads(request.body)
 
-    # Display prefilled form for changes
-    return render(request, "network/profile.html")
+    # Retrieve user and update with request info
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return JsonResponse({
+            "error": f"User '{username}' does not exist."
+        })
+    user.username = data.get("username")
+    user.first_name = data.get("firstName")
+    user.last_name = data.get("lastName")
+    user.email = data.get("email")
+    user.save()
+    
+    return JsonResponse({"message": "Profile updated successfully."}, status=200)
 
 def friends_list(request, username):
 

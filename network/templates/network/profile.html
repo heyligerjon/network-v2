@@ -8,9 +8,11 @@
                 Friends {{ friends }}
             </div>
         </div>
-        <h2 id="user-hdr">{{ user.username }}</h2>
         <div id="profile-pic"  class="profile-elm"></div>
-        <div>
+        <span hidden id="user-id">{{ user.id }}</span>
+        <h2 id="user-hdr">{{ user.username }}</h2>
+        <button type="button" id="profile-edit" class="btn btn-primary">Edit Profile</button>
+        <div id="user-fullname">
             <h5>{{ user.first_name|add:" "|add:user.last_name }}</h5>
         </div>
         <div id="status-view">
@@ -24,6 +26,27 @@
             {% endfor %}
             </div>
         </div>
+    </div>
+    <div id="profile-editor">
+        <form id="profile-edit-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <input id="field-user" class="form-control" autofocus type="text" name="username" placeholder="{{ user.username }}">
+            </div>
+            <div class="form-group">
+                <input id="field-first" class="form-control" autofocus type="text" name="firstName" placeholder="{{ user.first_name }}">
+            </div>
+            <div class="form-group">
+                <input id="field-last" class="form-control" autofocus type="text" name="lastName" placeholder="{{ user.last_name }}">
+            </div>
+            <div class="form-group">
+                <input id="field-email" class="form-control" type="email" name="email" placeholder="{{ user.email }}">
+            </div>
+            <div class="form-group">
+                <span class="form-info">Joined {{ user.date_joined }}</span>
+            </div>
+            <button type="submit" id="profile-update" class="btn btn-primary">Save</button>
+        </form>
     </div>
     <div id="friends-view">
         <div id="user-username">{{ user.username }}</div>
