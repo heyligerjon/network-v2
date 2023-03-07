@@ -1,6 +1,6 @@
+import emoji
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from emoji import get_emoji_unicode_dict
 
 class User(AbstractUser):
     friends = models.ManyToManyField("self", blank=True)
@@ -9,6 +9,13 @@ class User(AbstractUser):
     def __str__(self):
         return f"@{self.username}"
 
+    def is_valid_friends_list(self):
+        friend = self.friends.filter(id=self.id)
+        if friend:
+            return False
+        else: 
+            return True
+    
     def serialize(self):
         friends_list = list(self.friends.all().values_list())
         return {
@@ -45,6 +52,9 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.user}: {self.body}"
         
+    def is_valid_comment(self):
+        return self.body != ''
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -63,11 +73,18 @@ class Reaction(models.Model):
 
     def is_emoji(self):
         count = 0
-        for emoji in get_emoji_unicode_dict:
-            count += self.count(emoji)
-            if count > 1:
-                return False
-        return bool(count)
+        dict = emoji.get_aliases_unicode_dict()
+        react = emoji.demojize(self.reaction)
+        for i in dict:
+            if react == i:
+                count += 1
+            
+        if count > 0:
+            return True
+        return False
+    
+    def is_valid_react(self):
+        return self.reaction != '' and self.is_emoji() 
 
     def serialize(self):
         return {
