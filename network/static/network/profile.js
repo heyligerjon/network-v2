@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     username = document.querySelector('#user-hdr').innerHTML;
 
     // Use buttons to toggle between views
-    document.querySelector('#friends-count').addEventListener('click', () => 
+    document.querySelector('#friends-count').addEventListener('click', () =>
         load_friends(document.querySelector('#user-hdr').innerHTML));
-    
-    document.querySelector('#profile-edit').addEventListener('click', () => 
+
+    document.querySelector('#profile-edit').addEventListener('click', () =>
         load_editor());
     document.querySelector('#profile-edit-form').addEventListener('submit', (event) =>{
         event.preventDefault()
@@ -19,10 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function load_profile() {
 
-    // Hide the friends view and display the profile 
+    // Hide the friends view and display the profile
     document.querySelector('#profile-view').style.display = 'block'
     document.querySelector('#profile-editor').style.display = 'none'
-    document.querySelector('#friends-view').style.display = 'none'   
+    document.querySelector('#friends-view').style.display = 'none'
 }
 
 function load_friends(username) {
@@ -40,7 +40,7 @@ function load_friends(username) {
         }
         const friends = JSON.parse(context.data)
         friends.forEach(element => {
-            //  
+            //
             //if (element.fields.username == username)
             //     return;
 
@@ -67,14 +67,11 @@ function load_editor() {
     document.querySelector('#profile-editor').style.display = 'block'
     document.querySelector('#profile-view').style.display = 'none'
     document.querySelector('#friends-view').style.display = 'none'
-
-    
-
 }
 
 function edit_profile(username) {
 
-    // Retrieve data from form 
+    // Retrieve data from form
     // change to parse all form fields and create dict of values
     // add handling for empty fields
     user = document.querySelector('#field-user').value
