@@ -33,6 +33,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INSTALLED_APPS = [
     'network',
+    'front',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

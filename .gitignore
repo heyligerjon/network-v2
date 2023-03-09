@@ -5,7 +5,8 @@
 */__pycache__
 db.sqlite3
 mediagit
-/network/migrations
+*/migrations
+*/node_modules
 
 # File-based project format
 *.iws
