@@ -1,20 +1,49 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
 function Nav(props) {
     return (
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Network</a>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <a className="navbar-brand" href="#">Network</a>
             <div>
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">Timeline</a>
+              <ul className="navbar-nav mr-auto">
+
+                 <li id="profile-li" className="nav-item">
+                    <NavLink 
+                      to={`/profile/`}
+                      id="profile-link" 
+                      className="nav-link" 
+                      style={{fontWeight: 'bold'}}
+                    >
+                        Username
+                    </NavLink>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Following</a>
+                <li className="nav-item">
+                  <NavLink to={'/'} id="tl-link" className="nav-link">
+                    Timeline
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="#">Following</a>
+                </li>
+                <li className="nav-item">
+                        <a className="nav-link">Log Out</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link">Log In</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link">Register</a>
                 </li>
               </ul>
             </div>
         </nav>
     )
 }
+
+Nav.propTypes = {
+    window: PropTypes.func
+}
+
+export default Nav;
