@@ -7,7 +7,7 @@ class User(AbstractUser):
     profilePicture = models.ImageField(default='static/img/default.jpg', upload_to=None, blank=True)
 
     def __str__(self):
-        return f"@{self.username}"
+        return f"{self.username}"
 
     def is_valid_friends_list(self):
         friend = self.friends.filter(id=self.id)
@@ -35,13 +35,8 @@ class Status(models.Model):
     def __str__(self):
         return f"{self.user}'s Status: {self.body}"
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "username": self.user.username,
-            "body": self.body,
-            "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p")
-        }
+    def status__user(self):
+        return self.user.username
 
 class Comment(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="comments_made")
@@ -55,13 +50,8 @@ class Comment(models.Model):
     def is_valid_comment(self):
         return self.body != ''
     
-    def serialize(self):
-        return {
-            "id": self.id,
-            "commentPost": self.commentPost,
-            "body": self.body,
-            "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p")
-        }
+    def comment_data(self):
+        return self.user.username
 
 class Reaction(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="reactions_sent")

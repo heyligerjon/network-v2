@@ -1,22 +1,15 @@
+from django.urls import path, include
+from rest_framework_nested import routers
+from .views import *
 
-from django.urls import path
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet, basename='user')
 
-from . import views
-
+user_router = routers.NestedSimpleRouter(router, r'users', lookup='user')
+user_router.register(r'status', StatusViewSet, basename='user-status')
+# router.register(r'users', CommentViewSet, basename='comment')
+# router.register(r'users', ReactionViewSet, basename='reaction')
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("login", views.login_view, name="login"),
-    path("logout", views.logout_view, name="logout"),
-    path("register", views.register, name="register"),
-    path("status/<int:statusId>", views.status_view, name="status_view"),
-    path("user/<str:username>", views.profile_view, name="profile_view"),
-
-    # API Routes
-    path("home", views.home, name="home"),
-    path("status/new", views.status_new, name="status_new"),
-    path("status/<int:statusId>/edit", views.status_edit, name="status_edit"),
-    path("status/<int:statusId>/react", views.react, name="react"),
-    path("status/<int:statusId>/comment", views.comment, name="comment"),
-    path("user/<str:username>/edit", views.profile_edit, name="profile_edit"),
-    path("user/<str:username>/friends", views.friends_list, name="friends_list")
+    path(r'', include(router.urls)),
+    path(r'', include(user_router.urls)),
 ]
