@@ -14,9 +14,28 @@ class UserViewSet(viewsets.ModelViewSet):
 class StatusViewSet(viewsets.ModelViewSet):
     serializer_class = StatusSerializer
     def get_queryset(self):
-        return Status.objects.filter(pk=self.kwargs['user_username'])
+        user = User.objects.get(username=self.kwargs['user_username'])
+        return Status.objects.filter(user=user)
+    
+    # def create(self):
+    #     pass
 
-# class CommentViewSet(viewsets.ModelViewSet):
-#     serializer_class = CommentSerializer
-#     post = StatusViewSet.retrieve()
-#     queryset = Comment.objects.all(commentPost=post)
+    # def retrieve(self):
+    #     pass
+
+    # def update(self):
+    #     pass
+
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    def get_queryset(self):
+        user = User.objects.get(username=self.kwargs['user_username'])
+        commentPost = Status.objects.get(pk=self.kwargs['user_status_pk']) 
+        return Comment.objects.filter(user=user, commentPost=commentPost)
+
+class ReactionViewSet(viewsets.ModelViewSet):
+    serializer_class = ReactionSerializer
+    def get_queryset(self):
+        user = User.objects.get(username=self.kwargs['user_username'])
+        reactPost = Status.objects.get(pk=self.kwargs['user_status_pk']) 
+        return Reaction.objects.filter(user=user, reactPost=reactPost)
