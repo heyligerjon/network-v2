@@ -3,6 +3,15 @@ import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
 function Nav(props) {
+
+    function getUser() {
+
+    }
+
+    function isLoggedIn() {
+
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <a className="navbar-brand" href="#">Network</a>
@@ -11,7 +20,7 @@ function Nav(props) {
 
                  <li id="profile-li" className="nav-item">
                     <NavLink 
-                      to={`/profile/`}
+                      to={`/username/`}
                       id="profile-link" 
                       className="nav-link" 
                       style={{fontWeight: 'bold'}}
@@ -20,7 +29,7 @@ function Nav(props) {
                     </NavLink>
                 </li>
                 <li className="nav-item">
-                  <NavLink to={'/'} id="tl-link" className="nav-link">
+                  <NavLink to={"/"} id="tl-link" className="nav-link">
                     Timeline
                   </NavLink>
                 </li>
@@ -31,10 +40,14 @@ function Nav(props) {
                         <a className="nav-link">Log Out</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link">Log In</a>
+                    <NavLink to={"/login"} id="login-link" className="nav-link">
+                        Log In
+                    </NavLink>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link">Register</a>
+                    <NavLink to={"/register"} id="register-link" className="nav-link">
+                        Register
+                    </NavLink>
                 </li>
               </ul>
             </div>
@@ -43,7 +56,7 @@ function Nav(props) {
 }
 
 Nav.propTypes = {
-    window: PropTypes.func
+    username: PropTypes.string
 }
 
 export default Nav;

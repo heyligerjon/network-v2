@@ -31,8 +31,10 @@ function Home(props) {
         e.preventDefault();
     
         // Parse the status form for content
-        body = document.querySelector('#status-body').value
-        fetch('/status/new', {
+        const body = document.querySelector('#status-body').value
+        const username = document.querySelector('#profile-link').innerHTML
+
+        fetch(`/api/user/${username}/status/`, {
             method: 'POST',
             body: JSON.stringify({
                 body: body
@@ -52,10 +54,10 @@ function Home(props) {
     return (
         <div className="home-view">
             <h3>Home</h3>
-            <form id="new-status-form">
+            <form id="new-status-form" onSubmit={add_status}>
                 <div className="form-group">
                     <textarea id="status-body" className="form-control"></textarea>
-                    <button type="submit" id="submit" className="btn btn-primary" onSubmit={add_status}>Post</button>
+                    <button type="submit" id="submit" className="btn btn-primary">Post</button>
                 </div>
             </form>
             <div id="status-view">

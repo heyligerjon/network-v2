@@ -4,6 +4,7 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
+#router.register(r'login', login_view.as_view(), basename='login')
 
 user_router = routers.NestedSimpleRouter(router, r'users', lookup='user')
 user_router.register(r'status', StatusViewSet, basename='user_status')

@@ -10,6 +10,12 @@
     </head>
     <body>        
         <div id="root" class="body"></div>
-        <script src="{% static 'frontend/main.js' %}"></script>
+        {% if path is None %}
+            <script src="{% static 'frontend/main.js' %}"></script>
+        {% elif path is 'login' %}
+            <script src="{% static 'frontend/login.js' %}"></script>
+        {% elif path is 'register' %}
+            <script src="{% static 'frontend/register.js' %}"></script>
+        {% endif %}
     </body>
 </html>
