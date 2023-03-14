@@ -10,21 +10,15 @@ class UserViewSet(viewsets.ModelViewSet):
     lookup_field = "username"
     queryset = User.objects.all()
 
-# Status will neet to be converted to reg ViewSet to list user statuses
 class StatusViewSet(viewsets.ModelViewSet):
     serializer_class = StatusSerializer
     def get_queryset(self):
         user = User.objects.get(username=self.kwargs['user_username'])
         return Status.objects.filter(user=user)
-    
-    # def create(self):
-    #     pass
 
-    # def retrieve(self):
-    #     pass
-
-    # def update(self):
-    #     pass
+    def list_friends(self, request, user_pk=None):
+        user = User.objects.get(pk=user_pk)
+        return Status.objects.filter(user__in=user.friends)
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
