@@ -31,6 +31,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Application definition
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 INSTALLED_APPS = [
     'network',
     'front',
@@ -41,7 +46,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    #allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.discord',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.reddit',
+    'allauth.socialaccount.providers.twitter',
+    'allauth.socialaccount.providers.twitter_oauth2',
 ]
+
+LOGIN_URL = '/admin/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,6 +71,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication'
+    ]
+}
 
 ROOT_URLCONF = 'project4.urls'
 
@@ -70,6 +100,31 @@ TEMPLATES = [
         },
     },
 ]
+
+SITE_ID = 1
+
+SOCIALACCOUNT_PROVIDERS = {
+    # 'discord': {
+    #     'SCOPE': {
+    #     }
+    # },
+    # 'facebook': {
+    #     'SCOPE': {
+    #     }
+    # },
+    # 'google': {
+    #     'SCOPE': {
+    #     }
+    # },
+    # 'reddit': {
+    #     'SCOPE': {
+    #     }
+    # },
+    # 'twitter': {
+    #     'SCOPE': {
+    #     }
+    # },
+}
 
 WSGI_APPLICATION = 'project4.wsgi.application'
 
@@ -123,11 +178,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
